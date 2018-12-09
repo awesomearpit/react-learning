@@ -1,5 +1,6 @@
 import React, { Component } from "react";
 import Person from "./Person/Person";
+import "../node_modules/bootstrap/dist/css/bootstrap.min.css";
 import "./App.css";
 
 class App extends Component {
@@ -9,7 +10,8 @@ class App extends Component {
       { name: "Divyank", age: "21" },
       { name: "Naman", age: "20" }
     ],
-    otherState: "some other Value"
+    otherState: "some other Value",
+    showPerson: false
   };
 
   clickHandler = () => {
@@ -31,28 +33,34 @@ class App extends Component {
       ]
     });
   };
+
+  toggleHandler = () => {
+    const doesShow = this.state.showPerson;
+    this.setState({ showPerson: !doesShow });
+  };
+
   render() {
+    let persons = null;
+    if (this.state.showPerson) {
+      persons = (
+        <div>
+          {this.state.person.map(person => {
+            return <Person name={person.name} age={person.age} />;
+          })}
+        </div>
+      );
+    }
     return (
       <div className="App">
         <h1>Hii, This is react</h1>
-        <button onClick={this.clickHandler}>
+        <button
+          className="btn btn-default"
+          style={{ "border-radius": "0" }}
+          onClick={this.toggleHandler}
+        >
           Click Here to Change the Name.....
         </button>
-        <Person
-          name={this.state.person[0].name}
-          age={this.state.person[0].age}
-          // change={this.nameChangeHandler}
-        />
-        <Person
-          name={this.state.person[1].name}
-          age={this.state.person[1].age}
-          change={this.nameChangeHandler}
-        />
-        <Person
-          name={this.state.person[2].name}
-          age={this.state.person[2].age}
-          // change={this.nameChangeHandler}
-        />
+        {persons}
       </div>
     );
   }
